@@ -11,8 +11,6 @@ class RecommenderClient:
 
     def add_data(self,newdata, city = '', create_model=True):
 
-        city = city.lower()
-
         if city in self.cities_added:
             return
 
