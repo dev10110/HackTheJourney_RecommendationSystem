@@ -1,3 +1,6 @@
+import time
+from threading import Thread
+
 import requests
 
 import json
@@ -5,6 +8,10 @@ import datetime
 import os
 import pandas as pd
 from typing import List
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class AmadeusClient:
@@ -62,10 +69,10 @@ class AmadeusClient:
             try:
                 citydata = self.get_poi(lat=cities['Latitude'][i], lon=cities['Longitude'][i],
                                         name=cities['Name'][i].lower(), lim=kpercity)
-                print('Loaded city: %s, with %i POIs' % (cities['Name'][i], len(citydata)))
+                logger.debug('Loaded city: %s, with %i POIs' % (cities['Name'][i], len(citydata)))
                 data += citydata
             except:
-                print('Failed city: %s' % cities['Name'][i])
+                logger.error('Failed city: %s' % cities['Name'][i])
 
         return data
 
@@ -100,6 +107,8 @@ class AmadeusClient:
         :return: returns city name
         """
 
+        logger.debug(f"Getting city for code {iata_code}")
+
         endpoint = "reference-data/locations"
         url = self.base_url + endpoint
 
@@ -108,12 +117,23 @@ class AmadeusClient:
             "keyword": iata_code
         }
 
-        data = requests.get(url, params=params, headers=self.headers).json().get("data")
+        while True:
+            res = requests.get(url, params=params, headers=self.headers)
+
+            if res.status_code != 429:
+                break
+
+            logger.warning("TOO MANY REQUESTS")
+            time.sleep(0.1)
+
+        data = res.json().get("data")
 
         if data:
+            logger.debug(f"Got city {data[0].get('address').get('cityName')} for code {iata_code}")
             return data[0].get("address").get("cityName")
 
         else:
+            logger.warning(f"No Data {res.json()}")
             return ""
 
 
@@ -131,8 +151,12 @@ class AmadeusClient:
         :param maxPrice: maxPrice for the flight, defaults to 65536
         :param currency: currency of the maxPrice parameter, defaults to GBP
 
-        :return:
+        :return: List of dict's containing at least
+                    {'type': 'flight-destination',
+                     'origin': 'origin-IATA',
+                     'destination': 'dest-IATA'}
         """
+
         inspiration_endpoint = 'shopping/flight-destinations'
         inspiration_url = self.base_url + inspiration_endpoint
 
@@ -148,7 +172,28 @@ class AmadeusClient:
 
         if res.status_code == 500:
 
-            # TODO: low fare search
-            raise Exception(f"No data found for city code {origin}")
+            return [city for city in self.popularDestinationSearch(origin)]
 
         return res.json().get("data")
+
+    def popularDestinationSearch(self, origin: str) -> List[dict]:
+        """
+
+        :param origin: 3 Letter IATA city code of origin
+
+        :return: List of popular cities
+        """
+
+        url = "travel/analytics/air-traffic/traveled"
+
+        params = {
+            "originCityCode": origin,
+            "period": (datetime.datetime.now() - datetime.timedelta(days=365)).strftime("%Y-%m")
+        }
+
+        data = requests.get(self.base_url + url, headers=self.headers,
+                            params=params).json().get("data")
+
+        return [{'type': 'flight-destination',
+                 'origin': origin,
+                 'destination': dest} for dest in data]
