@@ -16,11 +16,14 @@ class RecommenderClient:
         model_data = self.model_data = ref_data[['category', 'tags']]
         model_data['index'] = model_data.index
 
+        self.categories = self.model_data['category'].unique()
+
         #create turicreate SFrame
         tc_data = self.tc_data = tc.SFrame(model_data)
 
         #create model
         model = self.model = tc.recommender.item_content_recommender.create(tc_data, item_id = 'index', verbose=False)
+
 
     def cold_start(self,k=10):
         #k is the number of items to suggest.
@@ -32,18 +35,27 @@ class RecommenderClient:
         return suggestion_id
 
 
-    def suggest(self, k = 10, likes = [], dislikes = []):
+    def suggest(self, k = 10, likes = [], dislikes = [], categories = []):
         #likes is the list of items that have been liked.
-        #returns pandas dataframe with index and the score and rank
+        #categories is either a string matching the category, or a list of strings matching the categories
+        #returns pandas dataframe with index and the score
+
+
+        #create list of allowed items
+        if categories  == []:
+            allowed_index = list(range(self.num_of_choices));
+        else:
+            allowed_index = [i for i in range(self.num_of_choices) if self.model_data['category'][i] in categories]
+            #allowed_items = tc.SFrame(allowed_index)
 
         recommendations = self.model.recommend_from_interactions(observed_items = likes,
                                                                  k=k,
-                                                                 exclude=None,
-                                                                 items=None,
+                                                                 exclude=None, #dislikes,#tc.SFrame(self.model_data.iloc[dislikes]),
+                                                                 items=allowed_index,
                                                                  new_user_data=None,
                                                                  new_item_data=None,
                                                                  exclude_known=True,
-                                                                 diversity=3,
+                                                                 diversity=0,
                                                                  random_seed=None,
                                                                  verbose=False)
 
