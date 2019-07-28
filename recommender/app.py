@@ -5,17 +5,50 @@ from RecommenderClient import RecommenderClient
 from data_import.AmadeusClient import AmadeusClient
 import pickle
 import json
+import logging
+
 
 app = Flask(__name__)
+logger = logging.getLogger(__name__)
 
 
 client = RecommenderClient()
 ac = AmadeusClient()
 
-# TODO: convert data into (data, cities)
-# TODO: convert cities names into IATA Codes
-data = pickle.load(open("../data_import/all_data.pkl", "rb"))
-client.add_data(data, create_model=True)
+
+data = pickle.load(open("final_data.pkl", "rb"))
+client.add_data(data.get("data"), create_model=True)
+client.cities_added += set(data.get("cities"))
+
+
+def checkCitysAndAdd(city_iatas: List[str]):
+    """Checks if cities contained in recommender data and add data
+
+    :param city_iatas: iata codes for cities to add to recommender
+
+    :return:
+    """
+
+    for city in city_iatas:
+        if not city in client.cities_added:
+            logger.debug(f"City {city} not in data, performing lookup and adding to data")
+
+            # todo: convert city name to long, lat
+            tmp_data = ac.get_poi(lon=1, lat=1, city=city)
+
+            data['data'] += tmp_data
+            data['cities'] += city
+
+            client.add_data(tmp_data, city=city, create_model=False)
+
+        else:
+            logger.debug(f"City {city} is already contained in recommenderModel")
+
+    logger.debug("Storing new data in pkl file")
+    pickle.dump(data, open("final_data.pkl", "wb"))
+
+    logger.debug("Creating model with new data")
+    client.create_model()
 
 
 @app.route("/index")
@@ -55,6 +88,7 @@ def getRecommendations():
 
     return jsonify(client.recs2data(result, df=False))
 
+
 @app.route("/generateInspiration")
 def generateInspiration():
     """
@@ -69,10 +103,11 @@ def generateInspiration():
     likes = request.args.get("likes")
     origin = request.args.get("origin", "LON")
     budget = request.args.get("budget")
-
-    limit = request.args.get("limit", 10)
+    limit_inspirations = request.args.get("limit_inspirations", 10)
+    limit_activities = request.args.get("limit_activities", 10)
 
     # todo: startdate and enddate parameters
+
     if not likes:
         abort(400, "Missing parameter likes")
 
@@ -83,12 +118,21 @@ def generateInspiration():
         print(e)
         abort(400, "Invalid data in likes parameter")
 
-    cities = ac.get_inspiration(origin, budget=budget)
+    cities = ac.get_inspiration(origin, budget=budget, limit=limit_inspirations)
 
-    # todo: check if city is in recommender data
-    # if not: # todo: call poi for city
-              # todo: add data to recommender data
-    # todo: return list of cities with top x recommended activities
+    city_iata_codes = [city.get("destination") for city in cities]
+    checkCitysAndAdd(city_iata_codes)
+
+    output = []
+    for city in city_iata_codes:
+
+        recommendations = client.suggest(likes, cities=city, k=limit_activities)
+        recommendations_dict = client.recs2data(recommendations, df=False)
+
+        output.append({
+            "city": city,
+            "activies": recommendations_dict
+        })
 
 
 if __name__ == "__main__":
