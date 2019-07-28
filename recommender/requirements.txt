@@ -1,0 +1,4 @@
+flask
+turicreate
+numpy
+pandas
