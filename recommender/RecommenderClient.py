@@ -1,15 +1,13 @@
 import turicreate as tc
 import pandas as pd
-import numpy as np
 import random
-import os
 
 
 class RecommenderClient:
     def __init__(self):
         # data is what is returned by Vishnu's client
-        self.data = [];
-        self.cities_added = set();
+        self.data = []
+        self.cities_added = set()
 
     def add_data(self,newdata, city = '', create_model=True):
 
@@ -22,7 +20,8 @@ class RecommenderClient:
 
         #the ref data is the raw data table
         ref_data = self.ref_data = pd.DataFrame.from_dict(self.data)
-        self.num_of_choices = len(ref_data);
+
+        self.num_of_choices = len(ref_data)
 
         #if city is not an empty string, add the name of the city to the list of cities.
         if not city:
@@ -30,8 +29,6 @@ class RecommenderClient:
 
         if create_model:
             self.create_model()
-        return
-
 
     def create_model(self):
 
@@ -56,9 +53,9 @@ class RecommenderClient:
         #randomly suggests k items
         # returns list of indices.
 
-        suggestion_id = random.sample(list(range(self.num_of_choices)), k=k)
-
-        return suggestion_id
+        return [{"id": suggestion_id,
+                 "data": self.data[suggestion_id]}
+                for suggestion_id in random.sample(list(range(self.num_of_choices)), k=k)]
 
 
     def suggest(self, k = 10, likes = [], dislikes = [], categories = [], cities = [], diversity=2):
