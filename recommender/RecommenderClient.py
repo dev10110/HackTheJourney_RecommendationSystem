@@ -43,7 +43,7 @@ class RecommenderClient:
                                                                  new_user_data=None,
                                                                  new_item_data=None,
                                                                  exclude_known=True,
-                                                                 diversity=0,
+                                                                 diversity=3,
                                                                  random_seed=None,
                                                                  verbose=False)
 
