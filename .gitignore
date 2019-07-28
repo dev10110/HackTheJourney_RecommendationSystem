@@ -1,2 +1,6 @@
 *.pickle
 .venv/
+.ipynb_checkpoints/
+testing.ipynb
+.idea/
+.ipynb_checkpoints
