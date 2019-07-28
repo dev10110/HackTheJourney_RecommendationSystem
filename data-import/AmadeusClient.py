@@ -1,7 +1,10 @@
 import requests
 
 import json
+import datetime
 import os
+from typing import List
+
 
 class AmadeusClient:
 	base_url = 'https://api.amadeus.com/v1/'
@@ -9,7 +12,6 @@ class AmadeusClient:
 
 	def __init__(self):
 		self.get_token()
-
 
 	def get_token(self):
 		auth_endpoint = 'security/oauth2/token'
@@ -26,8 +28,6 @@ class AmadeusClient:
 		j = json.loads(r.text)
 		self.auth_token = j['access_token']
 
-
-
 	def get_poi(self, lat, lon, rad=20, lim=1000):
 		poi_endpoint = 'reference-data/locations/pois'
 		poi_url = self.base_url + poi_endpoint
@@ -42,4 +42,27 @@ class AmadeusClient:
 		}
 
 		r = requests.get(poi_url, headers=poi_headers, params=poi_params)
+		return json.loads(r.text)['data']
+
+	def get_inspiration(self, origin: str,
+						startdate: datetime.date = None,
+						enddate: datetime.date = None,
+						maxPrice: int = None,
+						currency: str = "GBP") -> List[dict]:
+
+		inspiration_endpoint = 'shopping/flight-destinations'
+		inspiration_url = self.base_url + inspiration_endpoint
+
+		params = {
+			'origin': origin,
+			'departureDate': f"{startdate.strftime('%Y-%m-%d') if startdate else datetime.datetime.now()}"
+					         f"{(',' + enddate.strftime('%Y-%m-%d')) if enddate else ''}",
+			"currency": currency,
+			"maxPrice": maxPrice if maxPrice else 65536
+		}
+		headers = {
+			'Authorization': 'Bearer ' + self.auth_token
+		}
+
+		r = requests.get(inspiration_url, headers=headers, params=params)
 		return json.loads(r.text)['data']
