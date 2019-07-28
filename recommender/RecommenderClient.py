@@ -110,7 +110,7 @@ class RecommenderClient:
             return recdf
 
         else:
-            return recdf.to_dict()
+            return [recdf.iloc[i].to_dict() for i in range(len(recdf))]
 
     def ind2data(self,index, df = True):
         #converts list of indices to recommdation data
