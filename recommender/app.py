@@ -5,8 +5,11 @@ import json
 import random
 
 app = Flask(__name__)
-data = pickle.load(open("london_poi.pickle", "rb"))
-client = RecommenderClient(data)
+
+
+client = RecommenderClient()
+data = pickle.load(open("../data-import/all_data.pkl", "rb"))
+client.add_data(data, create_model=True)
 
 
 @app.route("/index")
@@ -39,13 +42,9 @@ def getRecommendations():
         print(e)
         abort(400, "Invalid data in likes parameter")
 
-    out = list()
+    result = client.suggest(k=limit, likes=likes)
 
-    for entry in client.suggest(k=limit, likes=likes):
-        entry["data"] = data[entry.get("index")]
-        out.append(entry)
-
-    return jsonify(out)
+    return jsonify(client.recs2data(result, df=False))
 
 
 if __name__ == "__main__":
