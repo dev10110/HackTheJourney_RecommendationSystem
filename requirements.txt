@@ -2,3 +2,4 @@ flask
 turicreate
 numpy
 pandas
+python-dotenv

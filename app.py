@@ -1,9 +1,10 @@
 from typing import List
 
 from flask import Flask, jsonify, request, abort
-from RecommenderClient import RecommenderClient
+from recommender.RecommenderClient import RecommenderClient
 from data_import.AmadeusClient import AmadeusClient
 import pickle
+import settings
 import json
 import logging
 
