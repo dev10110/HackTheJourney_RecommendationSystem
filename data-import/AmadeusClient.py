@@ -1,8 +1,11 @@
 import requests
 
 import json
+import datetime
 import os
 import pandas as pd
+from typing import List
+
 
 class AmadeusClient:
 	base_url = 'https://api.amadeus.com/v1/'
@@ -68,3 +71,26 @@ class AmadeusClient:
 		        print('Failed city: %s' % cities['Name'][i])
 
 		return data
+
+	def get_inspiration(self, origin: str,
+						startdate: datetime.date = None,
+						enddate: datetime.date = None,
+						maxPrice: int = None,
+						currency: str = "GBP") -> List[dict]:
+
+		inspiration_endpoint = 'shopping/flight-destinations'
+		inspiration_url = self.base_url + inspiration_endpoint
+
+		params = {
+			'origin': origin,
+			'departureDate': f"{startdate.strftime('%Y-%m-%d') if startdate else datetime.datetime.now()}"
+					         f"{(',' + enddate.strftime('%Y-%m-%d')) if enddate else ''}",
+			"currency": currency,
+			"maxPrice": maxPrice if maxPrice else 65536
+		}
+		headers = {
+			'Authorization': 'Bearer ' + self.auth_token
+		}
+
+		r = requests.get(inspiration_url, headers=headers, params=params)
+		return json.loads(r.text)['data']
