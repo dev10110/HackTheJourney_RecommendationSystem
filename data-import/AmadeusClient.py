@@ -54,14 +54,17 @@ class AmadeusClient:
 
 		return data
 
-	build_default_data(self, kpercity = 20):
+	def build_default_data(self, kpercity = 20):
 		#builds the data set for the default list of cities
 		cities = pd.read_csv('defaultCities.csv')
-
 		data = []
+
 		for i in range(len(cities)):
-		    citydata = self.get_poi(lat=cities['Latitude'][i], lon=cities['Longitude'][i], name=cities['Name'][i],lim=kpercity)
-		    print('Loaded city: %s'%cities['Name'][i])
-		    data += citydata
+		    try:
+		        citydata = self.get_poi(lat=cities['Latitude'][i], lon=cities['Longitude'][i], name=cities['Name'][i].lower(),lim=kpercity)
+		        print('Loaded city: %s, with %i POIs' % (cities['Name'][i], len(citydata)))
+		        data += citydata
+		    except:
+		        print('Failed city: %s' % cities['Name'][i])
 
 		return data
