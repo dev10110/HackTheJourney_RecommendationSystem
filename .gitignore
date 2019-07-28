@@ -1,2 +1,2 @@
 *.pickle
-.venv/
+.DS_Store
