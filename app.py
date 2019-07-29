@@ -1,8 +1,10 @@
+import datetime
 from typing import List
 
 from flask import Flask, jsonify, request, abort
 from recommender.RecommenderClient import RecommenderClient
 from data_import.AmadeusClient import AmadeusClient
+from planner.PlannerClient import GoogleMapsClient
 import pickle
 import settings
 import json
@@ -11,10 +13,12 @@ import logging
 
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
+settings.load_dotenv()
 
 
 client = RecommenderClient()
 ac = AmadeusClient()
+google = GoogleMapsClient()
 
 
 data = pickle.load(open("final_data.pkl", "rb"))
@@ -22,7 +26,7 @@ client.add_data(data.get("data"), create_model=True)
 client.cities_added.union(data.get("cities"))
 
 
-def checkCitysAndAdd(city_iatas: List[str]):
+def checkCitysAndAdd(city_iatas: List[str]) -> List[str]:
     """Checks if cities contained in recommender data and add data
 
     :param city_iatas: iata codes for cities to add to recommender
@@ -30,12 +34,17 @@ def checkCitysAndAdd(city_iatas: List[str]):
     :return:
     """
 
+    city_names = []
     for city in city_iatas:
         if not city in client.cities_added:
             logger.debug(f"City {city} not in data, performing lookup and adding to data")
 
-            # todo: convert city name to long, lat
-            tmp_data = ac.get_poi(lon=1, lat=1, city=city)
+            city_name = ac.get_city_iata(city)
+            city_names.append(city_name)
+
+            lat_long = google.getLatLongCity(city_name)
+
+            tmp_data = ac.get_poi(lon=lat_long.get("lng"), lat=lat_long.get("lat"), name=city)
 
             data['data'] += tmp_data
             data['cities'] += city
@@ -51,6 +60,7 @@ def checkCitysAndAdd(city_iatas: List[str]):
     logger.debug("Creating model with new data")
     client.create_model()
 
+    return city_names
 
 @app.route("/")
 def index():
@@ -116,7 +126,8 @@ def generateInspiration():
     :keyword: likes: List of likes corresponing with indecies of POI's
     :keyword: origin: IATA Code from where flight should originate from, defaults to LON
     :keyword: budget: limit recommended flights to flights inside budget
-    :keyword: limit: limit amount of recommended activities per city
+    :keyword: limit_activities: limit amount of recommended activities per city, defaults to 10
+    :keyword: limit_inspirations: limit amount of inspirations, defaults to 10
 
     :return: -
     """
@@ -124,10 +135,9 @@ def generateInspiration():
     likes = request.args.get("likes")
     origin = request.args.get("origin", "LON")
     budget = request.args.get("budget")
-    limit_inspirations = request.args.get("limit_inspirations", 10)
-    limit_activities = request.args.get("limit_activities", 10)
-
-    # todo: startdate and enddate parameters
+    limit_inspirations = int(request.args.get("limit_inspirations", 10))
+    limit_activities = int(request.args.get("limit_activities", 10))
+    startdate = request.args.get("startdate")
 
     if not likes:
         abort(400, "Missing parameter likes")
@@ -139,22 +149,23 @@ def generateInspiration():
         print(e)
         abort(400, "Invalid data in likes parameter")
 
-    cities = ac.get_inspiration(origin, budget=budget, limit=limit_inspirations)
+    if startdate:
+        startdate = datetime.datetime.strptime(startdate, "%Y-%m-%d")
+
+    cities = ac.get_inspiration(origin, maxPrice=budget, limit=limit_inspirations,
+                                startdate=startdate)
 
     city_iata_codes = [city.get("destination") for city in cities]
-    checkCitysAndAdd(city_iata_codes)
+    city_names = checkCitysAndAdd(city_iata_codes)
 
-    output = []
-    for city in city_iata_codes:
-
-        recommendations = client.suggest(likes, cities=city, k=limit_activities)
+    for index, city in enumerate(cities):
+        cities[index]["city-name"] = city_names[index]
+        recommendations = client.suggest(likes=likes, cities=city.get("destination"), k=limit_activities)
         recommendations_dict = client.recs2data(recommendations, df=False)
+        cities[index]["activities"] = recommendations_dict
 
-        output.append({
-            "city": city,
-            "activies": recommendations_dict
-        })
+    return jsonify(cities)
 
 
 if __name__ == "__main__":
-    app.run("0.0.0.0", 8080, debug=True, threaded=True)
+    app.run("0.0.0.0", 8080, debug=False, threaded=True)

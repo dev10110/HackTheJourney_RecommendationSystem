@@ -149,7 +149,6 @@ class AmadeusClient:
 
     def get_inspiration(self, origin: str,
                         startdate: datetime.date = None,
-                        enddate: datetime.date = None,
                         maxPrice: int = None,
                         currency: str = "GBP",
                         limit: int = 10) -> List[dict]:
@@ -158,7 +157,6 @@ class AmadeusClient:
 
         :param origin: 3 Letter IATA city code of origin city
         :param startdate: start Date for date timerange, defaults to now()
-        :param enddate: end Date for date timerange, can be left out
         :param maxPrice: maxPrice for the flight, defaults to 65536
         :param currency: currency of the maxPrice parameter, defaults to GBP
         :param limit: limit amount of inspirations, defaults to 10
@@ -172,10 +170,12 @@ class AmadeusClient:
         inspiration_endpoint = 'shopping/flight-destinations'
         inspiration_url = self.base_url + inspiration_endpoint
 
+        start = startdate if startdate else datetime.datetime.now()
+        end = start + datetime.timedelta(days=30)
+
         params = {
             'origin': origin,
-            'departureDate': f"{startdate.strftime('%Y-%m-%d') if startdate else datetime.datetime.now().strftime('%Y-%m-%d')}"
-            f"{(',' + enddate.strftime('%Y-%m-%d')) if enddate else ''}",
+            'departureDate': f"{start.strftime('%Y-%m-%d')},{end.strftime('%Y-%m-%d')}",
             "currency": currency,
             "maxPrice": maxPrice if maxPrice else 65536
         }
