@@ -7,6 +7,7 @@ from data_import.AmadeusClient import AmadeusClient
 from planner.PlannerClient import GoogleMapsClient
 import pickle
 import settings
+import sys
 import json
 import logging
 
@@ -168,4 +169,13 @@ def generateInspiration():
 
 
 if __name__ == "__main__":
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
+
     app.run("0.0.0.0", 8080, debug=False, threaded=True)
