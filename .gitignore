@@ -6,3 +6,4 @@ testing.ipynb
 .ipynb_checkpoints
 all_data.pkl
 *.pem
+.env
