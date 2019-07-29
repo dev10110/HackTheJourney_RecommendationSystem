@@ -1,3 +1,5 @@
+from typing import List
+
 import turicreate as tc
 import pandas as pd
 import random
@@ -9,9 +11,14 @@ class RecommenderClient:
         self.data = []
         self.cities_added = set()
 
-    def add_data(self,newdata, city = '', create_model=True):
+    def add_data(self, newdata: List[dict], city: str = '', create_model: bool = True):
+        """
 
-        city = city.lower()
+        :param newdata: data to add to recommender
+        :param city: iata code for city to add
+        :param create_model: boolean if model should be created, defaults to true
+        :return:
+        """
 
         if city in self.cities_added:
             return
@@ -33,7 +40,7 @@ class RecommenderClient:
     def create_model(self):
 
         #construct data frame that contains only the training categories
-        model_data = self.model_data = self.ref_data[['category', 'tags','city']]
+        model_data = self.model_data = self.ref_data[['category', 'tags', 'city']]
         model_data['index'] = model_data.index
 
         #update list of categories
@@ -44,8 +51,6 @@ class RecommenderClient:
 
         #create model
         self.model = tc.recommender.item_content_recommender.create(tc_data, item_id = 'index', verbose=False)
-
-        return
 
 
     def cold_start(self,k=10):

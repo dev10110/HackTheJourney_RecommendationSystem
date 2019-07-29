@@ -60,7 +60,7 @@ class AmadeusClient:
 
         return data
 
-    def build_default_data(self, kpercity=20):
+    def build_default_data(self, kpercity=500):
         # builds the data set for the default list of cities
         cities = pd.read_csv('defaultCities.csv')
         data = []
@@ -71,6 +71,7 @@ class AmadeusClient:
                                         name=cities['Name'][i].lower(), lim=kpercity)
                 logger.debug('Loaded city: %s, with %i POIs' % (cities['Name'][i], len(citydata)))
                 data += citydata
+
             except:
                 logger.error('Failed city: %s' % cities['Name'][i])
 
@@ -84,6 +85,8 @@ class AmadeusClient:
         :return: returns IATA code
         """
 
+        logger.debug(f"Getting IATA code for city {city_name}")
+
         endpoint = "reference-data/locations"
         url = self.base_url + endpoint
 
@@ -92,12 +95,19 @@ class AmadeusClient:
             "keyword": city_name
         }
 
-        data = requests.get(url, params=params, headers=self.headers).json().get("data")
+        res = requests.get(url, params=params, headers=self.headers)
+
+        data = res.json().get("data")
+
+        logger.debug(data)
 
         if data:
+            logger.debug(f"Got IATA code {data[0].get('iataCode')} for city {city_name}")
             return data[0].get("iataCode")
 
-        else: return ""
+        else:
+            logger.warning(f"No Data {res.json()}")
+            return ""
 
     def get_city_iata(self, iata_code: str) -> str:
         """
@@ -141,7 +151,8 @@ class AmadeusClient:
                         startdate: datetime.date = None,
                         enddate: datetime.date = None,
                         maxPrice: int = None,
-                        currency: str = "GBP") -> List[dict]:
+                        currency: str = "GBP",
+                        limit: int = 10) -> List[dict]:
 
         """
 
@@ -150,6 +161,7 @@ class AmadeusClient:
         :param enddate: end Date for date timerange, can be left out
         :param maxPrice: maxPrice for the flight, defaults to 65536
         :param currency: currency of the maxPrice parameter, defaults to GBP
+        :param limit: limit amount of inspirations, defaults to 10
 
         :return: List of dict's containing at least
                     {'type': 'flight-destination',
@@ -172,14 +184,19 @@ class AmadeusClient:
 
         if res.status_code == 500:
 
-            return [city for city in self.popularDestinationSearch(origin)]
+            return self.popularDestinationSearch(origin)
 
-        return res.json().get("data")
+        data = res.json().get("data")[:limit]
 
-    def popularDestinationSearch(self, origin: str) -> List[dict]:
+        return data
+
+    def popularDestinationSearch(self,
+                                 origin: str,
+                                 limit: int = 10) -> List[dict]:
         """
 
         :param origin: 3 Letter IATA city code of origin
+        :param limit: limit amount of recommended places, defaults to 10
 
         :return: List of popular cities
         """
@@ -196,4 +213,4 @@ class AmadeusClient:
 
         return [{'type': 'flight-destination',
                  'origin': origin,
-                 'destination': dest} for dest in data]
+                 'destination': dest} for dest in data[:limit]]
