@@ -52,7 +52,7 @@ def checkCitysAndAdd(city_iatas: List[str]):
     client.create_model()
 
 
-@app.route("/index")
+@app.route("/")
 def index():
     return "Call /getRecommendations"
 
@@ -137,4 +137,4 @@ def generateInspiration():
 
 
 if __name__ == "__main__":
-    app.run("localhost", 8080, debug=True, threaded=True)
+    app.run("0.0.0.0", 8080, debug=True, threaded=True)
