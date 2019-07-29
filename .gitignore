@@ -1,5 +1,6 @@
 *.pickle
 .venv/
+__pychache__/
 .ipynb_checkpoints/
 testing.ipynb
 .idea/
