@@ -5,3 +5,4 @@ testing.ipynb
 .idea/
 .ipynb_checkpoints
 all_data.pkl
+*.pem
