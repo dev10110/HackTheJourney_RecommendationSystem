@@ -112,6 +112,8 @@ class GoogleMapsClient():
             else:
                 result['transits'] += [self.get_transit_directions(pois[itin['path'][i]],pois[itin['path'][i+1]])]
 
+        return result
+
 
     def get_transit_directions(self,origin, destination, location_bias=None, mode='transit', summarise = True):
         #assume origin is either in a amadeus style or is a text entry for google maps search
@@ -150,7 +152,7 @@ class GoogleMapsClient():
 
 
 
-        
+
 
 
     def get_transit_summary(self,transit):
@@ -171,3 +173,4 @@ class GoogleMapsClient():
 
 
         return summary
+        
