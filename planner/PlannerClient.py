@@ -1,7 +1,6 @@
 import pandas as pd
 import random
 import googlemaps
-import os
 from datetime import datetime
 
 import tsp #solves the travelling salesman problem
@@ -11,22 +10,6 @@ class GoogleMapsClient():
 
         self.gmaps = googlemaps.Client(key=os.environ['mapsAPI'])
         self.poi_latlon = None
-
-
-    def getLatLongCity(self, city_name: str) -> dict:
-
-        places = self.gmaps.find_place(input=city_name, input_type='textquery')
-
-        if not places:
-            raise Exception("No Place Found")
-
-        place_id = places['candidates'][0]['place_id']
-
-        res = self.gmaps.place(place_id)["result"]["geometry"]["location"]
-
-        self.poi_latlon = res
-
-        return res
 
     def get_place_ids_from_POIs(self,pois):
         #accept list of pois
@@ -120,14 +103,12 @@ class GoogleMapsClient():
 
         result['transits'] = []
 
-        for i in range(len(pois)):
-            print(i)
-            if i == 0:
-                result['transits'] += [self.get_transit_directions(mean_loc, pois[itin['path'][0]])]
-            elif i == len(pois)-1:
-                result['transits'] += [self.get_transit_directions(pois[itin['path'][-1]], mean_loc)]
-            else:
-                result['transits'] += [self.get_transit_directions(pois[itin['path'][i]],pois[itin['path'][i+1]])]
+        result['transits'] += [self.get_transit_directions(mean_loc, pois[itin['path'][0]])]
+
+        for i in range(len(pois)-1):
+            result['transits'] += [self.get_transit_directions(pois[itin['path'][i]],pois[itin['path'][i+1]])]
+
+        result['transits'] += [self.get_transit_directions(pois[itin['path'][-1]], mean_loc)]
 
         return result
 
@@ -155,7 +136,7 @@ class GoogleMapsClient():
             dest_details = self.get_details(destination, location_bias=location_bias)
             dest_latlon = dest_details['latlon']
         elif 'latitude' in destination.keys():
-            destination_latlon = destination
+            dest_latlon = destination
         else:
             dest_latlon = destination['geoCode']
 
