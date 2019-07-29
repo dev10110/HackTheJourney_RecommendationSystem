@@ -2,8 +2,12 @@ import pandas as pd
 import random
 import googlemaps
 from datetime import datetime
-
+import logging
 import tsp #solves the travelling salesman problem
+import os
+
+logger = logging.getLogger(__name__)
+
 
 class GoogleMapsClient():
     def __init__(self):
@@ -73,6 +77,9 @@ class GoogleMapsClient():
         result = dict()
         result['path'] = poi_path
         result['dist_matrix'] = dist_matrix
+        # result['travel_time'] = travel_time
+
+        logger.debug(f"Itenary {result}")
         result['travel_time'] = travel_time
 
         return result
