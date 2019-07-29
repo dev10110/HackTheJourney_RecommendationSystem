@@ -1,5 +1,6 @@
+requests=2.19
+numpy=1.15
 flask
 turicreate
-numpy
 pandas
 python-dotenv

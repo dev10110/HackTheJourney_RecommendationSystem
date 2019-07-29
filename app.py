@@ -19,7 +19,7 @@ ac = AmadeusClient()
 
 data = pickle.load(open("final_data.pkl", "rb"))
 client.add_data(data.get("data"), create_model=True)
-client.cities_added += set(data.get("cities"))
+client.cities_added.union(data.get("cities"))
 
 
 def checkCitysAndAdd(city_iatas: List[str]):
