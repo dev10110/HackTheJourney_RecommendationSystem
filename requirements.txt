@@ -1,5 +1,5 @@
-requests=2.19
-numpy=1.15
+requests==2.19
+numpy==1.15
 flask
 turicreate
 pandas
