@@ -84,6 +84,21 @@ class GoogleMapsClient():
 
         return result
 
+    def getLatLongCity(self, city_name: str) -> dict:
+
+        places = self.gmaps.find_place(input=city_name, input_type='textquery')
+
+        if not places:
+            raise Exception("No Place Found")
+
+        place_id = places['candidates'][0]['place_id']
+
+        res = self.gmaps.place(place_id)["result"]["geometry"]["location"]
+
+        self.poi_latlon = res
+
+        return res
+
     def get_details(self, place_name,location_bias=None):
         #assumes the place_name is a text to query
         if location_bias is not None:
@@ -178,4 +193,3 @@ class GoogleMapsClient():
 
 
         return summary
-        
