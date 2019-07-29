@@ -44,8 +44,9 @@ class GoogleMapsClient():
     def get_mean_location(self,pois):
         #uses pois returned by amadeus
         poi_latlon = [pois[i]['geoCode'] for i in range(len(pois))]
+        self.poi_latlon = pd.DataFrame.from_dict(poi_latlon).mean().to_dict()
 
-        return pd.DataFrame.from_dict(poi_latlon).mean().to_dict()
+        return  self.poi_latlon
 
 
     def generate_itinerary(self, pois, hotel_lat_lon = None):
@@ -100,15 +101,26 @@ class GoogleMapsClient():
         else:
             candidate = self.gmaps.find_place(input = place_name, input_type='textquery',fields=['place_id'])
 
-        place_id = candidate['candidates'][0]['place_id'] #extracts the first poi
-        details = self.gmaps.place(place_id)
-        latlon = details['result']['geometry']['location']
+        try:
+            place_id = candidate['candidates'][0]['place_id'] #extracts the first poi
+            details = self.gmaps.place(place_id)
+            latlon = details['result']['geometry']['location']
+            return {'place_id': place_id, 'latlon': latlon,'details':details}
+        except:
+            print('Error: Possibly, didnt find enough candidates?')
 
-        return {'place_id': place_id, 'latlon': latlon,'details':details}
+
 
 
     def get_transit_directions(self,origin, destination, location_bias=None, mode='transit', summarise = True):
         #assume origin is either in a amadeus style or is a text entry for google maps search
+
+        if location_bias is None:
+            try:
+                location_bias = self.poi_latlon
+
+            except:
+                pass
 
         if type(origin) is str:
             origin_details = self.get_details(origin, location_bias=location_bias)
@@ -135,9 +147,12 @@ class GoogleMapsClient():
             return transit
 
 
-    def get_transit_summary(self,transit):
 
-        #summarizes the transit directions
+
+
+
+
+    def get_transit_summary(self,transit):
         summary = dict()
 
         summary['total_time'] = transit[0]['legs'][0]['duration']['text']
@@ -154,3 +169,4 @@ class GoogleMapsClient():
         summary['legs'] = legs
 
         return summary
+        
