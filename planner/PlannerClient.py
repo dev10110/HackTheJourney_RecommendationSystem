@@ -92,7 +92,25 @@ class GoogleMapsClient():
         except:
             print('Error: Possibly, didnt find enough candidates?')
 
+    def generate_itinerary_and_directions(self, pois):
 
+        mean_loc = self.get_mean_location(pois)
+        itin = self.generate_itinerary(pois)
+
+        result = dict()
+        result['mean_loc'] = mean_loc
+        result['ordered_pois'] = [pois[el] for el in itin['path']]
+
+        result['transits'] = []
+
+        for i in range(len(pois)):
+            print(i)
+            if i == 0:
+                result['transits'] += [self.get_transit_directions(mean_loc, pois[itin['path'][0]])]
+            elif i == len(pois)-1:
+                result['transits'] += [self.get_transit_directions(pois[itin['path'][-1]], mean_loc)]
+            else:
+                result['transits'] += [self.get_transit_directions(pois[itin['path'][i]],pois[itin['path'][i+1]])]
 
 
     def get_transit_directions(self,origin, destination, location_bias=None, mode='transit', summarise = True):
@@ -132,7 +150,7 @@ class GoogleMapsClient():
 
 
 
-
+        
 
 
     def get_transit_summary(self,transit):
@@ -142,14 +160,14 @@ class GoogleMapsClient():
 
 
         legs = dict()
-        for i in range(len(transit_dir[0]['legs'][0]['steps'])):
+        for i in range(len(transit[0]['legs'][0]['steps'])):
 
-            dur_string  = transit_dir[0]['legs'][0]['steps'][i]['duration']['text']
-            description = transit_dir[0]['legs'][0]['steps'][i]['html_instructions']
+            dur_string  = transit[0]['legs'][0]['steps'][i]['duration']['text']
+            description = transit[0]['legs'][0]['steps'][i]['html_instructions']
 
             legs[i] = {'duration': dur_string, 'text': description}
 
         summary['legs'] = legs
 
+
         return summary
-        
