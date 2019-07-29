@@ -54,7 +54,7 @@ def checkCitysAndAdd(city_iatas: List[str]):
 
 @app.route("/")
 def index():
-    return "Call /getRecommendations"
+    return "Take a look a the Readme.md :]"
 
 
 @app.route("/getPOI")
@@ -88,6 +88,26 @@ def getRecommendations():
     result = client.suggest(k=limit, likes=likes)
 
     return jsonify(client.recs2data(result, df=False))
+
+
+@app.route("/getIATA")
+def getIATA():
+    """Returns IATA code for given city
+
+    :keyword: city: city to return IATA code for
+    """
+
+    return ac.get_iata_city(request.args.get("city"))
+
+
+@app.route("/getCITY")
+def getCITY():
+    """Returns city name for given IATA code
+
+    :keyword: iata: iata code to get city for
+    """
+
+    return ac.get_city_iata(request.args.get("iata"))
 
 
 @app.route("/generateInspiration")
