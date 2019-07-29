@@ -102,105 +102,698 @@ Returns JSON Array containing Inspirations with recommended activities:
   {
     "activities": [
       {
-        "category": "RESTAURANT",
-        "city": "NTE",
+        "category": "SIGHTS",
+        "city": "MIL",
         "geoCode": {
-          "latitude": 47.20602,
-          "longitude": -1.564156
+          "latitude": 45.47324,
+          "longitude": 9.17601
         },
-        "name": "Les Machines de L'ile",
+        "name": "Parco Sempione",
+        "score": 0.2916666567325592,
+        "subType": "POINT_OF_INTEREST",
+        "tags": [
+          "sightseeing",
+          "attraction",
+          "sights",
+          "park"
+        ],
+        "type": "location"
+      },
+      {
+        "category": "SIGHTS",
+        "city": "MIL",
+        "geoCode": {
+          "latitude": 45.47324,
+          "longitude": 9.17601
+        },
+        "name": "Parco Sempione",
+        "score": 0.2916666567325592,
+        "subType": "POINT_OF_INTEREST",
+        "tags": [
+          "sightseeing",
+          "attraction",
+          "sights",
+          "park"
+        ],
+        "type": "location"
+      },
+      {
+        "category": "SIGHTS",
+        "city": "MIL",
+        "geoCode": {
+          "latitude": 45.47324,
+          "longitude": 9.17601
+        },
+        "name": "Parco Sempione",
+        "score": 0.2916666567325592,
+        "subType": "POINT_OF_INTEREST",
+        "tags": [
+          "sightseeing",
+          "attraction",
+          "sights",
+          "park"
+        ],
+        "type": "location"
+      },
+      {
+        "category": "SIGHTS",
+        "city": "MIL",
+        "geoCode": {
+          "latitude": 45.46992,
+          "longitude": 9.179714
+        },
+        "name": "Castello Sforzesco",
         "score": 0.0,
         "subType": "POINT_OF_INTEREST",
         "tags": [
           "sightseeing",
-          "restaurant",
+          "museum",
+          "landmark",
+          "castle"
+        ],
+        "type": "location"
+      },
+      {
+        "category": "SIGHTS",
+        "city": "MIL",
+        "geoCode": {
+          "latitude": 45.466034,
+          "longitude": 9.170694
+        },
+        "name": "Santa Maria delle Grazie",
+        "score": 0.0,
+        "subType": "POINT_OF_INTEREST",
+        "tags": [
+          "attraction",
           "activities",
-          "sights"
-        ],
-        "type": "location"
-      },
-      {
-        "category": "SIGHTS",
-        "city": "NTE",
-        "geoCode": {
-          "latitude": 47.219414,
-          "longitude": -1.547152
-        },
-        "name": "Mus\u00e9e des Beaux Arts de Nantes",
-        "score": 0.0,
-        "subType": "POINT_OF_INTEREST",
-        "tags": [
-          "restaurant",
-          "artgallerie",
-          "museum"
-        ],
-        "type": "location"
-      },
-      {
-        "category": "SIGHTS",
-        "city": "NTE",
-        "geoCode": {
-          "latitude": 47.218346,
-          "longitude": -1.550154
-        },
-        "name": "Cath\u00e9drale Saint Pierre et Saint Paul de Nantes",
-        "score": 0.0,
-        "subType": "POINT_OF_INTEREST",
-        "tags": [
-          "sightseeing",
-          "restaurant",
           "church",
           "temple"
         ],
         "type": "location"
+      }
+    ],
+    "city-name": "MILAN",
+    "departureDate": "2019-08-28",
+    "destination": "MIL",
+    "itenary": {
+      "dist_matrix": {
+        "destination_addresses": [
+          "Viale Guglielmo Shakespeare, 20121 Milano MI, Italy",
+          "Viale Alessandro Puskin, 20121 Milano MI, Italy",
+          "Viale Alessandro Puskin, 20121 Milano MI, Italy",
+          "Viale Alessandro Puskin, 20121 Milano MI, Italy",
+          "Unnamed Road, 20121 Milano MI, Italy",
+          "Piazza di Santa Maria delle Grazie, 2, 20123 Milano MI, Italy"
+        ],
+        "origin_addresses": [
+          "Viale Guglielmo Shakespeare, 20121 Milano MI, Italy",
+          "Viale Alessandro Puskin, 20121 Milano MI, Italy",
+          "Viale Alessandro Puskin, 20121 Milano MI, Italy",
+          "Viale Alessandro Puskin, 20121 Milano MI, Italy",
+          "Unnamed Road, 20121 Milano MI, Italy",
+          "Piazza di Santa Maria delle Grazie, 2, 20123 Milano MI, Italy"
+        ],
+        "rows": [
+          {
+            "elements": [
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.3 km",
+                  "value": 279
+                },
+                "duration": {
+                  "text": "3 mins",
+                  "value": 194
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.3 km",
+                  "value": 279
+                },
+                "duration": {
+                  "text": "3 mins",
+                  "value": 194
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.3 km",
+                  "value": 279
+                },
+                "duration": {
+                  "text": "3 mins",
+                  "value": 194
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 455
+                },
+                "duration": {
+                  "text": "6 mins",
+                  "value": 337
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1.2 km",
+                  "value": 1169
+                },
+                "duration": {
+                  "text": "14 mins",
+                  "value": 868
+                },
+                "status": "OK"
+              }
+            ]
+          },
+          {
+            "elements": [
+              {
+                "distance": {
+                  "text": "0.3 km",
+                  "value": 279
+                },
+                "duration": {
+                  "text": "3 mins",
+                  "value": 209
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 529
+                },
+                "duration": {
+                  "text": "7 mins",
+                  "value": 421
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1.3 km",
+                  "value": 1331
+                },
+                "duration": {
+                  "text": "17 mins",
+                  "value": 1015
+                },
+                "status": "OK"
+              }
+            ]
+          },
+          {
+            "elements": [
+              {
+                "distance": {
+                  "text": "0.3 km",
+                  "value": 279
+                },
+                "duration": {
+                  "text": "3 mins",
+                  "value": 209
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 529
+                },
+                "duration": {
+                  "text": "7 mins",
+                  "value": 421
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1.3 km",
+                  "value": 1331
+                },
+                "duration": {
+                  "text": "17 mins",
+                  "value": 1015
+                },
+                "status": "OK"
+              }
+            ]
+          },
+          {
+            "elements": [
+              {
+                "distance": {
+                  "text": "0.3 km",
+                  "value": 279
+                },
+                "duration": {
+                  "text": "3 mins",
+                  "value": 209
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 529
+                },
+                "duration": {
+                  "text": "7 mins",
+                  "value": 421
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1.3 km",
+                  "value": 1331
+                },
+                "duration": {
+                  "text": "17 mins",
+                  "value": 1015
+                },
+                "status": "OK"
+              }
+            ]
+          },
+          {
+            "elements": [
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 455
+                },
+                "duration": {
+                  "text": "5 mins",
+                  "value": 321
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 529
+                },
+                "duration": {
+                  "text": "6 mins",
+                  "value": 382
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 529
+                },
+                "duration": {
+                  "text": "6 mins",
+                  "value": 382
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "0.5 km",
+                  "value": 529
+                },
+                "duration": {
+                  "text": "6 mins",
+                  "value": 382
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1.1 km",
+                  "value": 1052
+                },
+                "duration": {
+                  "text": "13 mins",
+                  "value": 777
+                },
+                "status": "OK"
+              }
+            ]
+          },
+          {
+            "elements": [
+              {
+                "distance": {
+                  "text": "1.8 km",
+                  "value": 1832
+                },
+                "duration": {
+                  "text": "15 mins",
+                  "value": 880
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "2.1 km",
+                  "value": 2111
+                },
+                "duration": {
+                  "text": "18 mins",
+                  "value": 1074
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "2.1 km",
+                  "value": 2111
+                },
+                "duration": {
+                  "text": "18 mins",
+                  "value": 1074
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "2.1 km",
+                  "value": 2111
+                },
+                "duration": {
+                  "text": "18 mins",
+                  "value": 1074
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1.1 km",
+                  "value": 1052
+                },
+                "duration": {
+                  "text": "13 mins",
+                  "value": 806
+                },
+                "status": "OK"
+              },
+              {
+                "distance": {
+                  "text": "1 m",
+                  "value": 0
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 0
+                },
+                "status": "OK"
+              }
+            ]
+          }
+        ],
+        "status": "OK"
       },
+      "path": [
+        4,
+        3,
+        2,
+        0,
+        1
+      ],
+      "travel_time": [
+        [
+          0,
+          194,
+          194,
+          194,
+          337,
+          868
+        ],
+        [
+          209,
+          0,
+          0,
+          0,
+          421,
+          1015
+        ],
+        [
+          209,
+          0,
+          0,
+          0,
+          421,
+          1015
+        ],
+        [
+          209,
+          0,
+          0,
+          0,
+          421,
+          1015
+        ],
+        [
+          321,
+          382,
+          382,
+          382,
+          0,
+          777
+        ],
+        [
+          880,
+          1074,
+          1074,
+          1074,
+          806,
+          0
+        ]
+      ]
+    },
+    "links": {
+      "flightDates": "https://api.amadeus.com/v1/shopping/flight-dates?origin=LON&destination=MIL&departureDate=2019-07-29,2019-08-28&oneWay=false&duration=1,15&nonStop=false&maxPrice=400&currency=GBP&viewBy=DURATION",
+      "flightOffers": "https://api.amadeus.com/v1/shopping/flight-offers?origin=LON&destination=MIL&departureDate=2019-08-28&returnDate=2019-09-11&adults=1&nonStop=false&maxPrice=400&currency=GBP"
+    },
+    "origin": "LON",
+    "price": {
+      "total": "76.24"
+    },
+    "returnDate": "2019-09-11",
+    "type": "flight-destination"
+  },
+  {
+    "activities": [
       {
         "category": "SIGHTS",
-        "city": "NTE",
+        "city": "IEV",
         "geoCode": {
-          "latitude": 47.2177,
-          "longitude": -1.55832
+          "latitude": 50.44492,
+          "longitude": 30.508732
         },
-        "name": "Le Nid",
+        "name": "St Volodymyr's Cathedral",
         "score": 0.0,
         "subType": "POINT_OF_INTEREST",
         "tags": [
           "sightseeing",
-          "activities",
-          "bar"
+          "church",
+          "temple",
+          "sights",
+          "historicplace"
+        ],
+        "type": "location"
+      },
+      {
+        "category": "NIGHTLIFE",
+        "city": "IEV",
+        "geoCode": {
+          "latitude": 50.43974,
+          "longitude": 30.518206
+        },
+        "name": "Parovoz Speak Easy",
+        "score": 0.0,
+        "subType": "POINT_OF_INTEREST",
+        "tags": [
+          "restaurant",
+          "pub",
+          "nightlife"
+        ],
+        "type": "location"
+      },
+      {
+        "category": "SIGHTS",
+        "city": "IEV",
+        "geoCode": {
+          "latitude": 50.44936,
+          "longitude": 30.530762
+        },
+        "name": "National Art Museum of Ukraine",
+        "score": 0.0,
+        "subType": "POINT_OF_INTEREST",
+        "tags": [
+          "sightseeing",
+          "museum",
+          "sights",
+          "landmark",
+          "historicplace"
         ],
         "type": "location"
       },
       {
         "category": "RESTAURANT",
-        "city": "NTE",
+        "city": "IEV",
         "geoCode": {
-          "latitude": 47.224133,
-          "longitude": -1.582069
+          "latitude": 50.459087,
+          "longitude": 30.517462
         },
-        "name": "Parc de Proc\u00e9",
+        "name": "Kanapa Restaurant Salon",
         "score": 0.0,
         "subType": "POINT_OF_INTEREST",
         "tags": [
-          "restaurant",
-          "park"
+          "restaurant"
+        ],
+        "type": "location"
+      },
+      {
+        "category": "RESTAURANT",
+        "city": "IEV",
+        "geoCode": {
+          "latitude": 50.438854,
+          "longitude": 30.519646
+        },
+        "name": "Milk Bar",
+        "score": 0.0,
+        "subType": "POINT_OF_INTEREST",
+        "tags": [
+          "shopping",
+          "restaurant"
         ],
         "type": "location"
       }
-    ],
-    "city-name": "NANTES",
-    "departureDate": "2019-07-30",
-    "destination": "NTE",
-    "links": {
-      "flightDates": "https://api.amadeus.com/v1/shopping/flight-dates?origin=LON&destination=NTE&departureDate=2019-07-29,2019-07-31&oneWay=false&duration=1,15&nonStop=false&maxPrice=400&currency=GBP&viewBy=DURATION",
-      "flightOffers": "https://api.amadeus.com/v1/shopping/flight-offers?origin=LON&destination=NTE&departureDate=2019-07-30&returnDate=2019-08-07&adults=1&nonStop=false&maxPrice=400&currency=GBP"
-    },
-    "origin": "LON",
-    "price": {
-      "total": "96.74"
-    },
-    "returnDate": "2019-08-07",
-    "type": "flight-destination"
-  }, ...
+    ], ...
 ]
 ```

@@ -75,11 +75,12 @@ class GoogleMapsClient():
         poi_path = [loc-1 for loc in path[1:]]
 
         result = dict()
-        result['path'] = poi_path
+        result['path'] = [int(x) for x in poi_path]
         result['dist_matrix'] = dist_matrix
-        # result['travel_time'] = travel_time
+        result['travel_time'] = travel_time
 
-        logger.debug(f"Itenary {result}")
+        logger.debug(f"itinerary {result}")
+
         result['travel_time'] = travel_time
 
         return result
@@ -168,12 +169,6 @@ class GoogleMapsClient():
             return self.get_transit_summary(transit)
         else:
             return transit
-
-
-
-
-
-
 
     def get_transit_summary(self,transit):
         summary = dict()

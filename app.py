@@ -164,6 +164,7 @@ def generateInspiration():
         recommendations = client.suggest(likes=likes, cities=city.get("destination"), k=limit_activities)
         recommendations_dict = client.recs2data(recommendations, df=False)
         cities[index]["activities"] = recommendations_dict
+        cities[index]["itinerary"] = google.generate_itinerary(recommendations_dict)
 
     return jsonify(cities)
 
