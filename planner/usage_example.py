@@ -1,9 +1,10 @@
 # example useage
 import os
+import random
 os.chdir('../data-import/')
 
 from AmadeusClient import AmadeusClient
-
+from PlannerClient import GoogleMapsClient
 am = AmadeusClient()
 
 os.chdir('../planner/')

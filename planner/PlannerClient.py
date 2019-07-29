@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 import googlemaps
+import os
 from datetime import datetime
 
 import tsp #solves the travelling salesman problem
@@ -10,6 +11,22 @@ class GoogleMapsClient():
 
         self.gmaps = googlemaps.Client(key=os.environ['mapsAPI'])
         self.poi_latlon = None
+
+
+    def getLatLongCity(self, city_name: str) -> dict:
+
+        places = self.gmaps.find_place(input=city_name, input_type='textquery')
+
+        if not places:
+            raise Exception("No Place Found")
+
+        place_id = places['candidates'][0]['place_id']
+
+        res = self.gmaps.place(place_id)["result"]["geometry"]["location"]
+
+        self.poi_latlon = res
+
+        return res
 
     def get_place_ids_from_POIs(self,pois):
         #accept list of pois
